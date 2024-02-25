@@ -2,8 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { customerServiceRouter } from './routers/CustomerService';
-import { topicRouter } from './routers/Topics';
+import { authRouter, topicRouter, customerServiceRouter } from './routers';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -17,6 +16,7 @@ app.use(express.json());
 
 app.use('/customer-service', customerServiceRouter);
 app.use('/topics', topicRouter);
+app.use('/auth', authRouter);
 
 app.listen(port, () => {
   console.log(`Server running at ${port}`);
