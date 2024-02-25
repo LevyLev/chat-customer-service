@@ -43,3 +43,36 @@ customerServiceRouter.patch(
   '/:id/toggle-availability',
   toggleAvailabilityCustomerServiceRepresentative
 );
+
+// app.get('/customer-service', async (req, res) => {
+//   try {
+//     await CustomerService.create<ICustomerServiceRep>({
+//       name: 'John',
+//       available: true,
+//     });
+//     await CustomerService.create<ICustomerServiceRep>({
+//       name: 'Anna',
+//       available: true,
+//     });
+//     await CustomerService.create<ICustomerServiceRep>({
+//       name: 'Michael',
+//       available: true,
+//     });
+//     await CustomerService.create<ICustomerServiceRep>({
+//       name: 'Jane',
+//       available: true,
+//     });
+//     await CustomerService.create<ICustomerServiceRep>({
+//       name: 'Paula',
+//       available: true,
+//     });
+//     await CustomerService.create<ICustomerServiceRep>({
+//       name: 'Paula',
+//       available: true,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//   }
+
+//   res.status(200);
+// });

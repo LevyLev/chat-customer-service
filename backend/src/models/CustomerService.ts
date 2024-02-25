@@ -1,7 +1,6 @@
 import { Schema, model, Document } from 'mongoose';
 
 export interface ICustomerServiceRep extends Document {
-  _id: string;
   name: string;
   available: boolean;
 }
