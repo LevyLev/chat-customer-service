@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Topic } from '../models/Topics';
-import { createTopics, getTopics } from './Topics';
+import { createTopic, getTopics, deleteTopic } from './Topics';
 
 jest.mock('../models/Topics');
 
@@ -51,7 +51,7 @@ describe('TopicsRouter', () => {
     });
   });
 
-  describe('createTopics', () => {
+  describe('createTopic', () => {
     const mockTopic = {
       title: 'topic1',
       subTopics: [{ title: 'subTopic11', subTopics: ['lastSubTopic111'] }],
@@ -67,19 +67,50 @@ describe('TopicsRouter', () => {
       };
       (Topic.create as jest.Mock).mockResolvedValue(mockSavedTopic);
 
-      await createTopics(mockRequest, res);
+      await createTopic(mockRequest, res);
 
       expect(Topic.create).toHaveBeenCalledWith(mockTopic);
       expect(mockJson).toHaveBeenCalledWith(mockSavedTopic);
     });
 
     it('should handle errors', async () => {
+      const mockRequest = {
+        body: mockTopic,
+      } as unknown as Request;
       const errorMessage = 'Internal Server Error';
       (Topic.create as jest.Mock).mockRejectedValue(
         new Error('Database error')
       );
 
-      await createTopics(req, res);
+      await createTopic(mockRequest, res);
+
+      expect(mockStatus).toHaveBeenCalledWith(500);
+      expect(mockSend).toHaveBeenCalledWith(errorMessage);
+    });
+  });
+
+  describe('deleteTopic', () => {
+    it('should delete a topic', async () => {
+      const mockRequest = {
+        params: { id: '1' },
+      } as unknown as Request;
+
+      await deleteTopic(mockRequest, res);
+
+      expect(Topic.findByIdAndDelete).toHaveBeenCalledWith('1');
+      expect(mockSend).toHaveBeenCalledWith('Deleted');
+    });
+
+    it('should handle errors', async () => {
+      const mockRequest = {
+        params: { id: '1' },
+      } as unknown as Request;
+      const errorMessage = 'Internal Server Error';
+      (Topic.findByIdAndDelete as jest.Mock).mockRejectedValue(
+        new Error('Database error')
+      );
+
+      await deleteTopic(mockRequest, res);
 
       expect(mockStatus).toHaveBeenCalledWith(500);
       expect(mockSend).toHaveBeenCalledWith(errorMessage);

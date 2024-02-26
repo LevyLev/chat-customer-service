@@ -14,7 +14,7 @@ export const getTopics = async (_req: Request, res: Response) => {
   }
 };
 
-export const createTopics = async (req: Request, res: Response) => {
+export const createTopic = async (req: Request, res: Response) => {
   try {
     const { title, subTopics } = req.body;
     const createdTopic = await Topic.create<ITopic>({
@@ -28,5 +28,17 @@ export const createTopics = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteTopic = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await Topic.findByIdAndDelete(id);
+    res.send('Deleted');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
 topicRouter.get('/', getTopics);
-topicRouter.post('/', authorizeAdmin, createTopics);
+topicRouter.post('/', authorizeAdmin, createTopic);
+topicRouter.delete('/:id', authorizeAdmin, deleteTopic);
